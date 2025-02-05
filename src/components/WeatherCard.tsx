@@ -9,13 +9,15 @@ export const WeatherCard = () => {
   const { data: weatherData, isLoading } = useQuery({
     queryKey: ['weather'],
     queryFn: getWeatherData,
-    onError: () => {
-      toast({
-        title: "Error",
-        description: "Failed to fetch weather data. Showing default values.",
-        variant: "destructive",
-      });
-    },
+    meta: {
+      onError: () => {
+        toast({
+          title: "Error",
+          description: "Failed to fetch weather data. Showing default values.",
+          variant: "destructive",
+        });
+      }
+    }
   });
 
   return (
