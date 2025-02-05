@@ -3,6 +3,7 @@ import { SoilDataInput } from "@/components/SoilDataInput";
 import { WeatherCard } from "@/components/WeatherCard";
 import { RecommendationCard } from "@/components/RecommendationCard";
 import { ConsultationBooking } from "@/components/ConsultationBooking";
+import { BookSoilTesting } from "@/components/BookSoilTesting";
 
 const Index = () => {
   return (
@@ -14,7 +15,10 @@ const Index = () => {
           <WeatherCard />
         </div>
         <RecommendationCard />
-        <ConsultationBooking />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <ConsultationBooking />
+          <BookSoilTesting />
+        </div>
       </div>
     </div>
   );

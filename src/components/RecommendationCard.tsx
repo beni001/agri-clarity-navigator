@@ -1,4 +1,4 @@
-import { Plant, Droplets, ThermometerSun } from "lucide-react";
+import { Wheat, Droplets, ThermometerSun } from "lucide-react";
 
 export const RecommendationCard = () => {
   return (
@@ -10,7 +10,7 @@ export const RecommendationCard = () => {
       
       <div className="grid gap-4">
         <div className="flex items-start space-x-4 p-4 bg-background/50 rounded-lg">
-          <Plant className="h-6 w-6 text-primary mt-1" />
+          <Wheat className="h-6 w-6 text-primary mt-1" />
           <div className="space-y-1">
             <h4 className="font-medium">Optimal Crops</h4>
             <p className="text-sm text-secondary">Based on current soil and weather conditions, consider planting: Tomatoes, Lettuce, Carrots</p>
