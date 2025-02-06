@@ -6,6 +6,7 @@ import { RecommendationCard } from "@/components/RecommendationCard";
 import { ConsultationBooking } from "@/components/ConsultationBooking";
 import { BookSoilTesting } from "@/components/BookSoilTesting";
 import { SoilTestResults } from "@/components/SoilTestResults";
+import { Footer } from "@/components/Footer";
 import { useState } from "react";
 
 const Index = () => {
@@ -37,6 +38,7 @@ const Index = () => {
           <BookSoilTesting />
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
