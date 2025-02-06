@@ -11,6 +11,7 @@ export const calculateIrrigation = (weather: WeatherData): IrrigationRecommendat
   };
 };
 
+// Define the array first before using it in analyzeSoilData
 export const additionalCropsForKenya: CropRecommendation[] = [
   {
     crop: "Sukuma Wiki (Collard Greens)",
@@ -2020,7 +2021,7 @@ export const analyzeSoilData = (
   weather: WeatherData
 ) => {
   // Filter crops based on pH
-  const suitableCrops = cropRecommendations.filter(crop => {
+  const suitableCrops = additionalCropsForKenya.filter(crop => {
     const [minPh, maxPh] = crop.phRange;
     return ph >= minPh && ph <= maxPh;
   });

@@ -1,6 +1,6 @@
 
 import { Wheat, Droplets, ThermometerSun } from "lucide-react";
-import { analyzeSoilData } from '../data/cropRecommendations';
+import { analyzeSoilData, additionalCropsForKenya } from '../data/cropRecommendations';
 
 export const RecommendationCard = () => {
   // Example usage of the local data - you'll want to get these values from your soil data input
