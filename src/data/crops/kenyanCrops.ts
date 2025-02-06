@@ -1,3 +1,4 @@
+
 import { CropRecommendation } from '../../types/crops';
 
 export const kenyanCrops: CropRecommendation[] = [
@@ -918,4 +919,17 @@ export const kenyanCrops: CropRecommendation[] = [
       plantingSeason: "March - May"
     },
     yieldPotential: {
-      amount
+      amount: 15,
+      unit: "tonnes/ha"
+    },
+    managementPractices: {
+      pestControl: "Monitor for rhizome rot and leaf spot; use organic pesticides when needed.",
+      diseaseManagement: "Ensure proper drainage and spacing to prevent fungal diseases.",
+      nutrientManagement: "Apply organic matter and balanced fertilizers during growth."
+    },
+    metadata: {
+      source: "Kenya Agricultural Extension Service",
+      lastUpdated: new Date().toISOString()
+    }
+  }
+];
