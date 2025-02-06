@@ -1,9 +1,9 @@
 
 import { Wheat, Droplets, ThermometerSun } from "lucide-react";
-import { analyzeSoilData, additionalCropsForKenya } from '../data/cropRecommendations';
+import { analyzeSoilData } from '../data/cropRecommendations';
 
 export const RecommendationCard = () => {
-  // Example usage of the local data - you'll want to get these values from your soil data input
+  // Sample data structure matches the expected types
   const sampleData = {
     ph: 6.5,
     nutrients: {
@@ -29,7 +29,7 @@ export const RecommendationCard = () => {
     <div className="glass-card rounded-2xl p-6 space-y-6 fade-in">
       <div className="flex items-center justify-between">
         <h3 className="text-xl font-semibold">Crop Recommendations</h3>
-        <span className="text-sm text-secondary">Based on Local Analysis</span>
+        <span className="text-sm text-secondary">Based on Soil Analysis</span>
       </div>
       
       <div className="grid gap-4">
@@ -39,8 +39,8 @@ export const RecommendationCard = () => {
             <h4 className="font-medium">Optimal Crops</h4>
             <p className="text-sm text-secondary">
               {recommendations.recommendedCrops.length > 0 
-                ? `Recommended crops: ${recommendations.recommendedCrops.map(crop => crop.name).join(', ')}`
-                : 'Add crop data to see recommendations'}
+                ? recommendations.recommendedCrops.map(crop => crop.name).join(', ')
+                : 'Add soil data to see recommendations'}
             </p>
           </div>
         </div>
@@ -50,8 +50,7 @@ export const RecommendationCard = () => {
           <div className="space-y-1">
             <h4 className="font-medium">Irrigation Schedule</h4>
             <p className="text-sm text-secondary">
-              Recommended watering: {recommendations.irrigation.frequency}, 
-              {recommendations.irrigation.duration}
+              {`${recommendations.irrigation.frequency}, ${recommendations.irrigation.duration}`}
             </p>
           </div>
         </div>
@@ -62,7 +61,7 @@ export const RecommendationCard = () => {
             <h4 className="font-medium">Management Tips</h4>
             <p className="text-sm text-secondary">
               {recommendations.recommendedCrops[0]?.managementPractices?.nutrientManagement || 
-               'Add crop data to see management tips'}
+               'Add soil data to see management tips'}
             </p>
           </div>
         </div>
