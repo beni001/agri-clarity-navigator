@@ -202,7 +202,7 @@ export const kenyanCrops: CropRecommendation[] = [
       unit: "tonnes/ha"
     },
     managementPractices: {
-      pestControl: "Control onion fly and thrips with appropriate organic pesticides.",
+      pestControl: "Control onion fly and thrips with appropriate organic organic pesticides.",
       diseaseManagement: "Rotate crops to prevent soil-borne diseases like white rot.",
       nutrientManagement: "Incorporate compost and balanced fertilizers."
     },
@@ -918,4 +918,4 @@ export const kenyanCrops: CropRecommendation[] = [
       plantingSeason: "March - May"
     },
     yieldPotential: {
-      amount:
+      amount
