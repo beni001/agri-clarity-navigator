@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -22,23 +23,27 @@ export default {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        background: "#F2FCE2", // Soft, natural green background
+        foreground: "#2C4A1B", // Deep forest green for text
         primary: {
-          DEFAULT: "#1D1D1F",
+          DEFAULT: "#4A6741", // Rich olive green
           foreground: "#FFFFFF",
         },
         secondary: {
-          DEFAULT: "#86868B",
+          DEFAULT: "#8B7355", // Earthy brown
           foreground: "#FFFFFF",
         },
         accent: {
-          DEFAULT: "#E8E8ED",
-          foreground: "#1D1D1F",
+          DEFAULT: "#FEF7CD", // Soft yellow for drought highlights
+          foreground: "#6F4E37", // Coffee brown
         },
         muted: {
-          DEFAULT: "#F5F5F7",
-          foreground: "#86868B",
+          DEFAULT: "#E2D1C3", // Soft earth tone
+          foreground: "#5C4033", // Deep brown
+        },
+        destructive: {
+          DEFAULT: "#FEC6A1", // Soft orange for drought warnings
+          foreground: "#FFFFFF",
         },
       },
       borderRadius: {

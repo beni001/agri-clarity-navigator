@@ -24,7 +24,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-muted">
+    <div className="min-h-screen bg-background text-foreground">
       <Hero />
       <div className="container mx-auto px-4 py-12 space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
