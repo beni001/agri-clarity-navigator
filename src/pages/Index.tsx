@@ -32,7 +32,6 @@ const Index = () => {
       potassium: number; 
     }
   }) => {
-    // Add weather data (in a real app, this would come from a weather API)
     setSoilData({
       ...data,
       weather: {
@@ -47,14 +46,14 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Hero />
-      <div className="container mx-auto px-4 py-12 space-y-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="container mx-auto px-4 py-8 md:py-12 space-y-6 md:space-y-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
           <SoilDataInput />
           <WeatherCard />
         </div>
         <SoilTestResults onSubmit={handleSoilTestSubmit} />
         {soilData && <RecommendationCard soilData={soilData} />}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
           <ConsultationBooking />
           <BookSoilTesting />
         </div>
