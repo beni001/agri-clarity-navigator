@@ -1,9 +1,9 @@
-
 import { useState } from "react";
 import { TestTube, FileText } from "lucide-react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
+import { toast } from "./ui/use-toast";
 
 interface SoilTestData {
   ph: number;
@@ -28,9 +28,50 @@ export const SoilTestResults = ({
     }
   });
 
+  const handleNumberInput = (value: string, field: string) => {
+    const numberValue = parseFloat(value);
+    if (isNaN(numberValue)) return; // Prevent NaN values
+
+    if (field === 'ph') {
+      if (numberValue >= 0 && numberValue <= 14) {
+        setSoilData(prev => ({ ...prev, ph: numberValue }));
+      }
+    } else {
+      setSoilData(prev => ({
+        ...prev,
+        nutrients: {
+          ...prev.nutrients,
+          [field]: Math.max(0, numberValue) // Ensure non-negative values
+        }
+      }));
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate all values are numbers and within range
+    if (
+      isNaN(soilData.ph) || 
+      soilData.ph < 0 || 
+      soilData.ph > 14 ||
+      isNaN(soilData.nutrients.nitrogen) ||
+      isNaN(soilData.nutrients.phosphorus) ||
+      isNaN(soilData.nutrients.potassium)
+    ) {
+      toast({
+        title: "Invalid Input",
+        description: "Please ensure all values are valid numbers within range",
+        variant: "destructive"
+      });
+      return;
+    }
+
     onSubmit(soilData);
+    toast({
+      title: "Success",
+      description: "Soil test results submitted successfully"
+    });
   };
 
   return (
@@ -46,7 +87,7 @@ export const SoilTestResults = ({
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="ph">Soil pH Level</Label>
+            <Label htmlFor="ph">Soil pH Level (0-14)</Label>
             <Input
               id="ph"
               type="number"
@@ -54,62 +95,44 @@ export const SoilTestResults = ({
               min="0"
               max="14"
               value={soilData.ph}
-              onChange={(e) => setSoilData({ ...soilData, ph: parseFloat(e.target.value) })}
+              onChange={(e) => handleNumberInput(e.target.value, 'ph')}
               placeholder="Enter pH level (0-14)"
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="nitrogen">Nitrogen (N)</Label>
+              <Label htmlFor="nitrogen">Nitrogen (N) ppm</Label>
               <Input
                 id="nitrogen"
                 type="number"
                 min="0"
                 value={soilData.nutrients.nitrogen}
-                onChange={(e) => setSoilData({
-                  ...soilData,
-                  nutrients: {
-                    ...soilData.nutrients,
-                    nitrogen: parseInt(e.target.value)
-                  }
-                })}
+                onChange={(e) => handleNumberInput(e.target.value, 'nitrogen')}
                 placeholder="N content (ppm)"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="phosphorus">Phosphorus (P)</Label>
+              <Label htmlFor="phosphorus">Phosphorus (P) ppm</Label>
               <Input
                 id="phosphorus"
                 type="number"
                 min="0"
                 value={soilData.nutrients.phosphorus}
-                onChange={(e) => setSoilData({
-                  ...soilData,
-                  nutrients: {
-                    ...soilData.nutrients,
-                    phosphorus: parseInt(e.target.value)
-                  }
-                })}
+                onChange={(e) => handleNumberInput(e.target.value, 'phosphorus')}
                 placeholder="P content (ppm)"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="potassium">Potassium (K)</Label>
+              <Label htmlFor="potassium">Potassium (K) ppm</Label>
               <Input
                 id="potassium"
                 type="number"
                 min="0"
                 value={soilData.nutrients.potassium}
-                onChange={(e) => setSoilData({
-                  ...soilData,
-                  nutrients: {
-                    ...soilData.nutrients,
-                    potassium: parseInt(e.target.value)
-                  }
-                })}
+                onChange={(e) => handleNumberInput(e.target.value, 'potassium')}
                 placeholder="K content (ppm)"
               />
             </div>
