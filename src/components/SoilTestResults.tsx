@@ -3,6 +3,7 @@ import { TestTube, FileText } from "lucide-react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
+import { Slider } from "./ui/slider";
 import { toast } from "./ui/use-toast";
 
 interface SoilTestData {
@@ -28,36 +29,30 @@ export const SoilTestResults = ({
     }
   });
 
-  const handleNumberInput = (value: string, field: string) => {
-    const numberValue = parseFloat(value);
-    if (isNaN(numberValue)) return; // Prevent NaN values
+  const handlePhChange = (value: number[]) => {
+    setSoilData(prev => ({ ...prev, ph: value[0] }));
+  };
 
-    if (field === 'ph') {
-      if (numberValue >= 0 && numberValue <= 14) {
-        setSoilData(prev => ({ ...prev, ph: numberValue }));
+  const handleNutrientChange = (value: string, field: keyof typeof soilData.nutrients) => {
+    const numberValue = parseFloat(value);
+    if (isNaN(numberValue)) return;
+
+    setSoilData(prev => ({
+      ...prev,
+      nutrients: {
+        ...prev.nutrients,
+        [field]: Math.max(0, numberValue)
       }
-    } else {
-      setSoilData(prev => ({
-        ...prev,
-        nutrients: {
-          ...prev.nutrients,
-          [field]: Math.max(0, numberValue) // Ensure non-negative values
-        }
-      }));
-    }
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate all values are numbers and within range
     if (
-      isNaN(soilData.ph) || 
       soilData.ph < 0 || 
       soilData.ph > 14 ||
-      isNaN(soilData.nutrients.nitrogen) ||
-      isNaN(soilData.nutrients.phosphorus) ||
-      isNaN(soilData.nutrients.potassium)
+      Object.values(soilData.nutrients).some(value => isNaN(value))
     ) {
       toast({
         title: "Invalid Input",
@@ -84,20 +79,22 @@ export const SoilTestResults = ({
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="ph">Soil pH Level (0-14)</Label>
-            <Input
+            <Label htmlFor="ph">Soil pH Level: {soilData.ph.toFixed(1)}</Label>
+            <Slider
               id="ph"
-              type="number"
-              step="0.1"
-              min="0"
-              max="14"
-              value={soilData.ph}
-              onChange={(e) => handleNumberInput(e.target.value, 'ph')}
-              placeholder="Enter pH level (0-14)"
+              min={0}
+              max={14}
+              step={0.1}
+              value={[soilData.ph]}
+              onValueChange={handlePhChange}
+              className="py-4"
             />
+            <p className="text-sm text-muted-foreground">
+              Acidic (0-6) | Neutral (7) | Alkaline (8-14)
+            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -108,8 +105,8 @@ export const SoilTestResults = ({
                 type="number"
                 min="0"
                 value={soilData.nutrients.nitrogen}
-                onChange={(e) => handleNumberInput(e.target.value, 'nitrogen')}
-                placeholder="N content (ppm)"
+                onChange={(e) => handleNutrientChange(e.target.value, 'nitrogen')}
+                placeholder="N content"
               />
             </div>
 
@@ -120,8 +117,8 @@ export const SoilTestResults = ({
                 type="number"
                 min="0"
                 value={soilData.nutrients.phosphorus}
-                onChange={(e) => handleNumberInput(e.target.value, 'phosphorus')}
-                placeholder="P content (ppm)"
+                onChange={(e) => handleNutrientChange(e.target.value, 'phosphorus')}
+                placeholder="P content"
               />
             </div>
 
@@ -132,8 +129,8 @@ export const SoilTestResults = ({
                 type="number"
                 min="0"
                 value={soilData.nutrients.potassium}
-                onChange={(e) => handleNumberInput(e.target.value, 'potassium')}
-                placeholder="K content (ppm)"
+                onChange={(e) => handleNutrientChange(e.target.value, 'potassium')}
+                placeholder="K content"
               />
             </div>
           </div>

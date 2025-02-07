@@ -25,6 +25,19 @@ export const RecommendationCard = ({ soilData }: SoilDataProps) => {
     soilData.weather
   );
 
+  if (!recommendations.recommendedCrops.length) {
+    return (
+      <div className="glass-card rounded-2xl p-6 space-y-6 fade-in">
+        <div className="text-center">
+          <h3 className="text-xl font-semibold">No Recommendations Available</h3>
+          <p className="text-sm text-secondary">
+            No crops match the current soil conditions. Try adjusting your soil parameters.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="glass-card rounded-2xl p-6 space-y-6 fade-in">
       <div className="flex items-center justify-between">
@@ -37,9 +50,14 @@ export const RecommendationCard = ({ soilData }: SoilDataProps) => {
           <Wheat className="h-6 w-6 text-primary mt-1" />
           <div className="space-y-1">
             <h4 className="font-medium">Optimal Crops</h4>
-            <p className="text-sm text-secondary">
-              {recommendations.recommendedCrops.map(crop => crop.name).join(', ')}
-            </p>
+            <div className="space-y-2">
+              {recommendations.recommendedCrops.map((crop, index) => (
+                <div key={index} className="text-sm text-secondary">
+                  <strong>{crop.name}</strong>
+                  <p className="mt-1">{crop.notes}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         
@@ -53,16 +71,17 @@ export const RecommendationCard = ({ soilData }: SoilDataProps) => {
           </div>
         </div>
         
-        <div className="flex items-start space-x-4 p-4 bg-background/50 rounded-lg">
-          <ThermometerSun className="h-6 w-6 text-primary mt-1" />
-          <div className="space-y-1">
-            <h4 className="font-medium">Management Tips</h4>
-            <p className="text-sm text-secondary">
-              {recommendations.recommendedCrops[0]?.managementPractices?.nutrientManagement || 
-               'No specific management tips available'}
-            </p>
+        {recommendations.recommendedCrops[0]?.managementPractices && (
+          <div className="flex items-start space-x-4 p-4 bg-background/50 rounded-lg">
+            <ThermometerSun className="h-6 w-6 text-primary mt-1" />
+            <div className="space-y-1">
+              <h4 className="font-medium">Management Tips</h4>
+              <p className="text-sm text-secondary">
+                {recommendations.recommendedCrops[0].managementPractices.nutrientManagement}
+              </p>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
