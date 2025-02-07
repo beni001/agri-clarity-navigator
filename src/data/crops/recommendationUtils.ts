@@ -1,4 +1,3 @@
-
 import { WeatherData, IrrigationRecommendation, CropRecommendation } from '../../types/crops';
 import { kenyanCrops } from './kenyanCrops';
 
@@ -31,18 +30,37 @@ export const analyzeSoilData = (
   nutrients: { nitrogen: number; phosphorus: number; potassium: number },
   weather: WeatherData
 ) => {
-  // Filter crops based on pH range
-  const recommendedCrops = kenyanCrops.filter(crop => {
+  // Score each crop based on how well it matches the conditions
+  const scoredCrops = kenyanCrops.map(crop => {
     const [minPh, maxPh] = crop.phRange;
-    return ph >= minPh && ph <= maxPh;
-  }).filter(crop => {
-    // Further filter based on nutrient requirements
-    return (
-      nutrients.nitrogen >= crop.nutrients.nitrogen * 0.7 &&
-      nutrients.phosphorus >= crop.nutrients.phosphorus * 0.7 &&
-      nutrients.potassium >= crop.nutrients.potassium * 0.7
-    );
+    
+    // Calculate pH score (0-1)
+    const phScore = ph >= minPh - 1 && ph <= maxPh + 1 
+      ? 1 - Math.min(Math.abs(ph - (minPh + maxPh) / 2) / 2, 1)
+      : 0;
+
+    // Calculate nutrient scores (0-1)
+    const nitrogenScore = Math.max(0, 1 - Math.abs(1 - nutrients.nitrogen / (crop.nutrients.nitrogen * 0.5)));
+    const phosphorusScore = Math.max(0, 1 - Math.abs(1 - nutrients.phosphorus / (crop.nutrients.phosphorus * 0.5)));
+    const potassiumScore = Math.max(0, 1 - Math.abs(1 - nutrients.potassium / (crop.nutrients.potassium * 0.5)));
+
+    // Calculate total score
+    const totalScore = (phScore + nitrogenScore + phosphorusScore + potassiumScore) / 4;
+
+    return {
+      crop,
+      score: totalScore
+    };
   });
+
+  // Sort crops by score and get top recommendations
+  const recommendedCrops = scoredCrops
+    .filter(item => item.score > 0.3) // Minimum threshold for recommendations
+    .sort((a, b) => b.score - a.score)
+    .map(item => ({
+      ...item.crop,
+      notes: `${item.crop.notes} (Compatibility Score: ${Math.round(item.score * 100)}%)`
+    }));
 
   // Get irrigation recommendations
   const irrigation = calculateIrrigation(weather);
