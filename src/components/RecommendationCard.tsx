@@ -1,35 +1,35 @@
-
 import { Wheat, Droplets, ThermometerSun } from "lucide-react";
 import { analyzeSoilData } from '../data/cropRecommendations';
 
-export const RecommendationCard = () => {
-  // Sample data structure matches the expected types
-  const sampleData = {
-    ph: 6.5,
+interface SoilDataProps {
+  soilData: {
+    ph: number;
     nutrients: {
-      nitrogen: 50,
-      phosphorus: 30,
-      potassium: 40
-    },
+      nitrogen: number;
+      phosphorus: number;
+      potassium: number;
+    };
     weather: {
-      precipitation: 0,
-      temperature: 25,
-      humidity: 65,
-      windSpeed: 10
-    }
+      precipitation: number;
+      temperature: number;
+      humidity: number;
+      windSpeed: number;
+    };
   };
+}
 
+export const RecommendationCard = ({ soilData }: SoilDataProps) => {
   const recommendations = analyzeSoilData(
-    sampleData.ph,
-    sampleData.nutrients,
-    sampleData.weather
+    soilData.ph,
+    soilData.nutrients,
+    soilData.weather
   );
 
   return (
     <div className="glass-card rounded-2xl p-6 space-y-6 fade-in">
       <div className="flex items-center justify-between">
         <h3 className="text-xl font-semibold">Crop Recommendations</h3>
-        <span className="text-sm text-secondary">Based on Soil Analysis</span>
+        <span className="text-sm text-secondary">Based on Your Soil Analysis</span>
       </div>
       
       <div className="grid gap-4">
@@ -38,9 +38,7 @@ export const RecommendationCard = () => {
           <div className="space-y-1">
             <h4 className="font-medium">Optimal Crops</h4>
             <p className="text-sm text-secondary">
-              {recommendations.recommendedCrops.length > 0 
-                ? recommendations.recommendedCrops.map(crop => crop.name).join(', ')
-                : 'Add soil data to see recommendations'}
+              {recommendations.recommendedCrops.map(crop => crop.name).join(', ')}
             </p>
           </div>
         </div>
@@ -61,7 +59,7 @@ export const RecommendationCard = () => {
             <h4 className="font-medium">Management Tips</h4>
             <p className="text-sm text-secondary">
               {recommendations.recommendedCrops[0]?.managementPractices?.nutrientManagement || 
-               'Add soil data to see management tips'}
+               'No specific management tips available'}
             </p>
           </div>
         </div>

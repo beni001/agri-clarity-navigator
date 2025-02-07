@@ -1,4 +1,3 @@
-
 import { Hero } from "@/components/Hero";
 import { SoilDataInput } from "@/components/SoilDataInput";
 import { WeatherCard } from "@/components/WeatherCard";
@@ -10,17 +9,39 @@ import { Footer } from "@/components/Footer";
 import { useState } from "react";
 
 const Index = () => {
-  const [soilData, setSoilData] = useState({
-    ph: 7.0,
+  const [soilData, setSoilData] = useState<{
+    ph: number;
     nutrients: {
-      nitrogen: 0,
-      phosphorus: 0,
-      potassium: 0
-    }
-  });
+      nitrogen: number;
+      phosphorus: number;
+      potassium: number;
+    };
+    weather: {
+      precipitation: number;
+      temperature: number;
+      humidity: number;
+      windSpeed: number;
+    };
+  } | null>(null);
 
-  const handleSoilTestSubmit = (data: { ph: number; nutrients: { nitrogen: number; phosphorus: number; potassium: number; }}) => {
-    setSoilData(data);
+  const handleSoilTestSubmit = (data: { 
+    ph: number; 
+    nutrients: { 
+      nitrogen: number; 
+      phosphorus: number; 
+      potassium: number; 
+    }
+  }) => {
+    // Add weather data (in a real app, this would come from a weather API)
+    setSoilData({
+      ...data,
+      weather: {
+        precipitation: 0,
+        temperature: 25,
+        humidity: 65,
+        windSpeed: 10
+      }
+    });
   };
 
   return (
@@ -32,7 +53,7 @@ const Index = () => {
           <WeatherCard />
         </div>
         <SoilTestResults onSubmit={handleSoilTestSubmit} />
-        <RecommendationCard />
+        {soilData && <RecommendationCard soilData={soilData} />}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <ConsultationBooking />
           <BookSoilTesting />
